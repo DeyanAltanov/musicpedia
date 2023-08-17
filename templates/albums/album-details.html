@@ -1,0 +1,14 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <img src="{{ album.cover.url }}" alt="">
+    <h5 style="font-weight: bold;"> {{ album.artist.name }}</h5>
+    <h5> {{ album.title }}</h5>
+    <h5><b>Released: </b>{{ album.released }}</h5>
+    <h5><b>Label: </b>{{ album.label }}</h5>
+    <h5><b>Genre: </b>{{ album.genre.name }}</h5>
+    <h5>{{ album.length }}</h5>
+
+    <button><a class="nav-link" href={% url 'edit album info' album.id %}>Edit Info</a></button>
+    <button><a class="nav-link" href={% url 'edit album songs' album.id %}>Edit Songs</a></button>
+{% endblock %}
