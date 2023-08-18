@@ -34,7 +34,7 @@
     <button><a class="nav-link" href={% url 'add artist genres' artist.id %}>Add Genre</a></button>
     <div class="row" style="display: flex; justify-content: center;">
         {% for artist_genre in artist_genres %}
-            <p>{{ artist_genre.genre.name }}</p>
+            <p>{{ artist_genre.genre.name }}</p><a class="nav-link remove-album" href={% url 'delete artist genre' artist.id artist_genre.genre.id %}>Remove</a>
         {% endfor %}
     </div>
 {% endblock %}

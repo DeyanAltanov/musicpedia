@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <img src="{{ album.cover.url }}" alt="">
+    <img src="{{ album.album_cover.url }}" alt="">
     <h5 style="font-weight: bold;"> {{ album.artist.name }}</h5>
     <h5> {{ album.title }}</h5>
     <h5><b>Released: </b>{{ album.released }}</h5>

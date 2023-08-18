@@ -11,6 +11,10 @@ class Label(models.Model):
     def __str__(self):
         return self.name
 
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()
+
 
 class Artist(models.Model):
     name = models.CharField(max_length=255)
@@ -20,7 +24,7 @@ class Artist(models.Model):
     image = models.ImageField(upload_to='artists')
     description = models.TextField(default='')
     status = models.BooleanField(default=True)
-    born = models.DateField(blank=True, null=True)
+    born = models.DateField(blank=True, default='', null=True)
     solo = models.BooleanField(default=True)
     is_band = models.BooleanField(default=True)
 
@@ -29,6 +33,10 @@ class Artist(models.Model):
 
     def __str__(self):
         return self.name
+
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()
 
 
 class Genre(models.Model):
@@ -66,7 +74,7 @@ class MusicianInstruments(models.Model):
 class Album(models.Model):
     title = models.CharField(max_length=255)
     released = models.DateField(default=datetime.date.today)
-    artist = models.ForeignKey(Artist, default=1, blank=True, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, blank=True, null=True, on_delete=models.CASCADE)
     label = models.ForeignKey(Label, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     album_cover = models.ImageField(default='', upload_to='album_covers')
@@ -74,6 +82,10 @@ class Album(models.Model):
 
     def __str__(self):
         return self.title
+
+    def delete(self, using=None, keep_parents=False):
+        self.album_cover.storage.delete(self.album_cover.name)
+        super().delete()
 
 
 class Song(models.Model):
@@ -83,8 +95,8 @@ class Song(models.Model):
     artist = models.ForeignKey(Artist, null=True, blank=True, on_delete=models.CASCADE)
     label = models.ForeignKey(Label, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    song_cover = models.ImageField(default='', blank=True, null=True, upload_to='song_covers')
     length = models.DurationField(default='')
+    lyrics = models.TextField(default='', null=True, blank=True)
 
     def __str__(self):
         return self.title

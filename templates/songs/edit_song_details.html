@@ -16,13 +16,12 @@
         display: flex;
         flex-direction: column;
     }
+    #id_label{
+        width: fit-content;
+     }
     #id_status {
         width: 5%;
     }
-    #id_artist{
-        opacity: 0.6;
-        pointer-events: none;
-     }
     label {
         margin-top: 5px;
     }
@@ -30,13 +29,13 @@
 {% endblock %}
 
 {% block title %}
-    Add {{ artist.name }} Album
+    Edit {{ song.name }} Info
 {% endblock %}
 
 {% block content %}
-<div class="card-header"><h3 class="text-center font-weight-light my-4">Add {{ artist.name }} Album</h3></div>
+<div class="card-header"><h3 class="text-center font-weight-light my-4">Edit {{ song.name }} Info</h3></div>
 <div class="card-body">
-    <form method="post" action="{% url 'add album' artist.id %}" enctype="multipart/form-data">
+    <form method="post" action="{% url 'edit song details' song.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
         <div style="display: flex; justify-content: center;">

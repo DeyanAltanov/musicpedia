@@ -19,6 +19,9 @@
     #id_status {
         width: 5%;
     }
+    #id_album {
+        width: 5%;
+    }
     label {
         margin-top: 5px;
     }
@@ -31,10 +34,11 @@
 
 {% block content %}
 <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit {{ album.title}} Songs</h3></div>
-<button><a class="nav-link" href={% url 'add band album song' album.id %}>Add Song</a></button>
+<button><a class="nav-link" href={% url 'add album song' album.id %}>Add Song</a></button>
 <div class="row" style="display: flex; justify-content: center;">
     {% for album_song in album_songs %}
-        <a href=''>{{ album_song.title }}</a>
+        <a href={% url 'edit song details' album_song.id %}>{{ album_song.title }}</a>
+        <a class="nav-link remove-album" href={% url 'delete album song' album_song.id %}>Remove</a>
     {% endfor %}
 </div>
 {% endblock %}

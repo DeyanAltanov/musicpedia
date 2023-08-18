@@ -15,7 +15,14 @@
         {% endif %}
     </h5>
     <button><a class="nav-link" href={% url 'edit artist info' artist.id %}>Edit Info</a></button>
-    <button><a class="nav-link" href={% url 'edit band members' artist.id %}>Edit Members</a></button>
+    {% if artist.born %}
+        <button><a class="nav-link" href={% url 'edit musician instruments' artist.id %}>Edit Instruments</a></button>
+    {% else %}
+        <button><a class="nav-link" href={% url 'edit band members' artist.id %}>Edit Members</a></button>
+    {% endif %}
     <button><a class="nav-link" href={% url 'edit artist genres' artist.id %}>Edit Genres</a></button>
-    <button><a class="nav-link" href={% url 'edit artist albums' artist.id %}>Edit Albums</a></button>
+    {% if artist.solo or artist.is_band %}
+        <button><a class="nav-link" href={% url 'edit artist albums' artist.id %}>Edit Albums</a></button>
+    {% endif %}
+    <button><a class="nav-link" href={% url 'delete artist' artist.id %}>Delete Artist</a></button>
 {% endblock %}

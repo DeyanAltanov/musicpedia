@@ -1,12 +1,13 @@
 from itertools import chain
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 from musicpedia.accounts.models import Profile
 from musicpedia.music.forms import LabelForm, ArtistForm, GenreForm, InstrumentForm, BandMembersForm, \
-    MusicianInstrumentsForm, ArtistGenresForm, EditArtistForm, AlbumForm, EditAlbumForm, SongForm
-from musicpedia.music.models import Artist, BandMembers, ArtistGenres, Album, Song
+    MusicianInstrumentsForm, ArtistGenresForm, EditArtistForm, AlbumForm, EditAlbumForm, SongForm, EditSongForm
+from musicpedia.music.models import Artist, BandMembers, ArtistGenres, Album, Song, MusicianInstruments
 
 
 def get_profile():
@@ -148,10 +149,9 @@ def edit_band_members(request, pk):
 @login_required
 def add_band_member(request, pk):
     band = Artist.objects.get(pk=pk)
-    musicians = Artist.objects.filter(is_band=False)
 
     if request.method == 'POST':
-        form = BandMembersForm(request.POST, request.FILES, initial={'band': band, 'member': musicians})
+        form = BandMembersForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('artist details', pk=band.id)
@@ -159,7 +159,7 @@ def add_band_member(request, pk):
         form = BandMembersForm(initial={'band': band})
     context = {
         'form': form,
-        'band': band
+        'band': band,
     }
 
     return render(request, 'artists/add_band_member.html', context)
@@ -181,6 +181,20 @@ def add_musician_instrument(request, pk):
     }
 
     return render(request, 'instruments/add_musician_instrument.html', context)
+
+
+@login_required
+def edit_musician_instruments(request, pk):
+    musician = Artist.objects.get(pk=pk)
+
+    musician_instruments = MusicianInstruments.objects.filter(musician=pk)
+
+    context = {
+        'musician': musician,
+        'musician_instruments': musician_instruments
+    }
+
+    return render(request, 'instruments/edit_musician_instruments.html', context)
 
 
 @login_required
@@ -305,3 +319,78 @@ def add_album_song(request, pk):
     }
 
     return render(request, 'songs/add_album_song.html', context)
+
+
+@login_required
+def edit_song_details(request, pk):
+    song = Song.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = EditSongForm(request.POST, request.FILES, instance=song)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        form = EditAlbumForm(instance=song)
+    context = {
+        'form': form,
+        'song': song,
+    }
+    return render(request, 'songs/edit_song_details.html', context)
+
+
+@login_required
+def delete_artist(request, pk):
+    artist = Artist.objects.get(pk=pk)
+    if request.method == 'POST':
+        artist.delete()
+        return redirect('home')
+    else:
+        context = {
+            'artist': artist,
+        }
+        return render(request, 'artists/delete-artist.html', context)
+
+
+@login_required
+def delete_artist_album(request, pk):
+    artist_album = Album.objects.get(pk=pk)
+
+    artist_album.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def delete_band_member(request, bk, mk):
+    band_member = BandMembers.objects.get(band=bk, member=mk)
+
+    band_member.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def delete_artist_genre(request, ak, gk):
+    artist_genre = ArtistGenres.objects.get(artist=ak, genre=gk)
+
+    artist_genre.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def delete_musician_instrument(request, mk, bk, ik):
+    musician_instrument = MusicianInstruments.objects.get(musician=mk, band=bk, instrument=ik)
+
+    musician_instrument.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def delete_album_song(request, pk):
+    song = Song.objects.get(pk=pk)
+
+    song.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -1,0 +1,41 @@
+{% extends 'base/forms.html' %}
+
+{% block style %}
+<style>
+    .card {
+        margin: 0 auto;
+    }
+    input {
+        display: block;
+        width: 100%;
+    }
+    .btn-register {
+        margin-top: 15px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    #id_status {
+        width: 5%;
+    }
+    label {
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+    Edit {{ musician.name}} Instruments
+{% endblock %}
+
+{% block content %}
+    <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit {{ musician.name}} Instruments</h3></div>
+    <button><a class="nav-link" href={% url 'add musician instrument' musician.id %}>Add Instrument</a></button>
+    <div class="row" style="display: flex; justify-content: center;">
+        {% for musician_instrument in musician_instruments %}
+            <p>{{ musician_instrument.instrument.name }}</p> - <p>{{ musician_instrument.band.name }}</p>
+            <a class="nav-link remove-album" href={% url 'delete musician instrument' musician.id musician_instrument.band.id musician_instrument.instrument.id %}>Remove</a>
+        {% endfor %}
+    </div>
+{% endblock %}

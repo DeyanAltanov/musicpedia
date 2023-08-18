@@ -15,6 +15,10 @@ class ArtistForm(forms.ModelForm):
         model = Artist
         fields = '__all__'
 
+        widgets = {
+            'born': forms.widgets.DateInput(attrs={'type': 'date'})
+        }
+
 
 class GenreForm(forms.ModelForm):
     class Meta:
@@ -32,6 +36,10 @@ class BandMembersForm(forms.ModelForm):
     class Meta:
         model = BandMembers
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(BandMembersForm, self).__init__(*args, **kwargs)
+        self.fields['member'].queryset = Artist.objects.filter(is_band=False)
 
 
 class InstrumentForm(forms.ModelForm):
@@ -82,6 +90,10 @@ class MusicianInstrumentsForm(forms.ModelForm):
         model = MusicianInstruments
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(MusicianInstrumentsForm, self).__init__(*args, **kwargs)
+        self.fields['band'].queryset = Artist.objects.filter(is_band=True)
+
 
 class EditAlbumForm(AlbumForm):
     def save(self, commit=True):
@@ -90,6 +102,23 @@ class EditAlbumForm(AlbumForm):
 
     class Meta:
         model = Album
+        fields = '__all__'
+        widgets = {
+            'type': forms.TextInput(
+                attrs={
+                    'readonly': 'readonly',
+                }
+            )
+        }
+
+
+class EditSongForm(AlbumForm):
+    def save(self, commit=True):
+        song = Song.objects.get(pk=self.instance.id)
+        return super().save(commit)
+
+    class Meta:
+        model = Song
         fields = '__all__'
         widgets = {
             'type': forms.TextInput(
