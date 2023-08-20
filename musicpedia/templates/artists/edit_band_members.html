@@ -1,0 +1,72 @@
+{% extends 'base/forms.html' %}
+
+{% block style %}
+<style>
+    .card {
+        margin: 0 auto;
+    }
+    input {
+        display: block;
+        width: 100%;
+    }
+    .btn-register {
+        margin-top: 15px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    #id_status {
+        width: 5%;
+    }
+    label {
+        margin-top: 5px;
+    }
+    table {
+        width: 75% !important;
+        margin: 20px !important;
+        border-color: black !important;
+    }
+    td, th {
+      border-color: black !important;
+    }
+    td > a {
+        color: black !important;
+    }
+
+    td > a:hover {
+        color: grey !important;
+        filter: brightness(65%) !important;
+    }
+    button {
+        width: 150px;
+        margin: 0 auto !important;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+    Edit {{ band.name}} Members
+{% endblock %}
+
+{% block content %}
+<div class="card-header"><h3 class="text-center font-weight-light my-4">Edit {{ band.name}} Members</h3></div>
+<button><a class="nav-link" href={% url 'add band member' band.id %}>Add Member</a></button>
+<div class="row" style="display: flex; justify-content: center;">
+    <table>
+        {% for band_member in band_members %}
+            <tr>
+                <td>
+                    <a href={% url 'artist details' band_member.member.id %}>{{ band_member.member.name }}</a>
+                </td>
+                <td>
+                    <a class="nav-link remove-album" href={% url 'remove band member' band.id band_member.member.id %}>Remove</a>
+                </td>
+                <td>
+                    <a class="nav-link remove-album" href={% url 'delete band member' band.id band_member.member.id %}>Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

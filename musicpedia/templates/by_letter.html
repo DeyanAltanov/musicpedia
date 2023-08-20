@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="by_letter">
+            {% for letter in alphabet %}
+                <a style="width: 5px;" href={% url 'by letter' letter%}>{{ letter }}</a>
+            {% endfor %}
+        </div>
+        <h5 class="artists_h5">Artists</h5>
+        <div class="artists_by_letter">
+            {% for artist in artists %}
+                <a href={% url 'artist details' artist.id %}>{{ artist.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
