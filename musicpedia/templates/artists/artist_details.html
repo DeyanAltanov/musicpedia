@@ -30,7 +30,11 @@
             {% if artist.status %}
                 <span>Active</span>
             {% else %}
-                <span>Split-up</span>
+                {% if artist.born %}
+                    <span>Deceased</span>
+                {% else %}
+                    <span>Split-up</span>
+                {% endif %}
             {% endif %}
         </p>
         <p><b>Genres: </b></p>
@@ -39,11 +43,15 @@
             {% endfor %}
 
         {% if artist.born %}
-            <h3 style="margin: 0 auto; padding-bottom: 20px;">Bands</h3>
+            {% if is_band %}
+                <h3 style="margin: 0 auto; padding-bottom: 20px;">Bands</h3>
+            {% endif %}
             <table>
                 <thead>
                     <tr>
-                        <th>Band</th>
+                        {% if is_band %}
+                            <th>Band</th>
+                        {% endif %}
                         <th>Instrument</th>
                         <th>Years Active</th>
                     </tr>
@@ -51,7 +59,9 @@
                 <tbody>
                     {% for band in bands %}
                         <tr>
-                            <td><a href={% url 'artist details' band.band.id %}>{{ band.band }}</a></td>
+                            {% if band.band %}
+                                <td><a href={% url 'artist details' band.band.id %}>{{ band.band }}</a></td>
+                            {% endif %}
                             <td>{{ band.instrument}}</td>
                             <td>{{ band.years_active }}</td>
                         </tr>
