@@ -1,9 +1,0 @@
-{% extends 'base/base.html' %}
-
-{% block content %}
-    <div class="row" style="display: flex; justify-content: center;">
-        {% for letter in alphabet %}
-            <a style="width: 5px;" href={% url 'by letter' letter%}>{{ letter }}</a>
-        {% endfor %}
-    </div>
-{% endblock %}
