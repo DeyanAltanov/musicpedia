@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="width: 15% !important; margin: 0 auto;">
+        <p style="text-align: justify;">{{ song_lyrics }}</p>
+        <button><a class="nav-link" href="{{request.META.HTTP_REFERER}}">Back</a></button>
+    </div>
+
+{% endblock %}

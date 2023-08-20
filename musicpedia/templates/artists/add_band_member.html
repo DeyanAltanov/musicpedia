@@ -1,0 +1,50 @@
+{% extends 'base/forms.html' %}
+
+{% block style %}
+<style>
+    .card {
+        margin: 0 auto;
+    }
+    input {
+        display: block;
+        width: 100%;
+    }
+    .btn-register {
+        margin-top: 15px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    #id_present_member{
+        width: fit-content;
+     }
+    #id_status {
+        width: 5%;
+    }
+    #id_band{
+        opacity: 0.6;
+        pointer-events: none;
+     }
+    label {
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+    Add {{ band.name }} Member
+{% endblock %}
+
+{% block content %}
+<div class="card-header"><h3 class="text-center font-weight-light my-4">Add {{ band.name }} Member</h3></div>
+<div class="card-body">
+    <form method="post" action="{% url 'add band member' band.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <div style="display: flex; justify-content: center;">
+            <button class="btn btn-primary btn-register" type="submit">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

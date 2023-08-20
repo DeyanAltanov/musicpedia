@@ -1,0 +1,37 @@
+{% extends 'base/forms.html' %}
+
+{% block style %}
+    <style>
+        .card {
+            margin: 0 auto;
+        }
+        input {
+            display: block;
+            width: 100%;
+        }
+        .btn-primary {
+            margin: 0 auto;
+            margin-top: 15px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+    <div class="card-body">
+        <form method="post" action="{% url 'log in user' %}">
+            {% csrf_token %}
+            {{ form }}
+            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-center py-3">
+        <div class="small"><a href={% url 'register user' %}>Need an account? Sign up!</a></div>
+    </div>
+{% endblock %}

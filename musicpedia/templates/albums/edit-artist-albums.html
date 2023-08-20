@@ -1,0 +1,66 @@
+{% extends 'base/forms.html' %}
+
+{% block style %}
+<style>
+    .card {
+        margin: 0 auto;
+    }
+    input {
+        display: block;
+        width: 100%;
+    }
+    .btn-register {
+        margin-top: 15px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    #id_status {
+        width: 5%;
+    }
+    label {
+        margin-top: 5px;
+    }
+    table {
+        width: 75% !important;
+        margin: 20px !important;
+        border-color: black !important;
+    }
+    td, th {
+      border-color: black !important;
+    }
+    td > a {
+        color: black !important;
+    }
+
+    td > a:hover {
+        color: grey !important;
+        filter: brightness(65%) !important;
+    }
+    button {
+        width: 150px;
+        margin: 0 auto !important;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+    Edit {{ artist.name}} Albums
+{% endblock %}
+
+{% block content %}
+<div class="card-header"><h3 class="text-center font-weight-light my-4">Edit {{ artist.name}} Album</h3></div>
+<button><a class="nav-link" href={% url 'add album' artist.id %}>Add Album</a></button>
+<div class="row" style="display: flex; justify-content: center;">
+    <table>
+        {% for artist_album in artist_albums %}
+            <tr>
+                <td><a href={% url 'album details' artist_album.id %}>{{ artist_album.title }}</a></td>
+                <td><a class="nav-link remove-album" href={% url 'delete artist album' artist_album.id %}>Remove</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endblock %}
