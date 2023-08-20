@@ -165,6 +165,11 @@ def artist_details(request, pk):
     present_band_members = BandMembers.objects.filter(band=pk, present_member=True)
     past_band_members = BandMembers.objects.filter(band=pk, present_member=False)
     genres = ArtistGenres.objects.filter(artist=pk)
+    is_band = False
+    for band in bands:
+        if band.band:
+            is_band = True
+            break
 
     context = {
         'artist': artist,
@@ -172,7 +177,8 @@ def artist_details(request, pk):
         'bands': bands,
         'present_band_members': present_band_members,
         'past_band_members': past_band_members,
-        'genres': genres
+        'genres': genres,
+        'is_band': is_band
     }
     return render(request, 'artists/artist_details.html', context)
 
